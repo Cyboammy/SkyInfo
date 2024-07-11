@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <style>
+        *{
+          margin: 0px;
+          padding: 0px;
+          box-sizing: border-box;
+          text-decoration: none;
+          color: azure;
+          font-family: "Ubuntu", sans-serif;
+        }
+        body{
+          background-image:url(https://images.pexels.com/photos/2098427/pexels-photo-2098427.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        #icon img{
+            width: 100px;
+            height: 100px;
+            margin-left: 9px;
+            margin-bottom: 50px;
+            margin-top: 10px;
+        }
+        #icon{
+          width: 100px;
+            height: 100px;
+            margin-left: 113px;
+            margin-bottom: 5px;
+            margin-top: 3px;
+        }
+         .container{
+    position: fixed;
+    border: 1px solid black;
+    width: 330px;
+    height: 350px;
+    background-color: rgba(255, 255, 255, 0.103);
+    backdrop-filter:(10px);
+    margin-left: 200px;
+    margin-top: 90px;
+    border-radius: 5px;
+        }
+        
+        .location{
+    position: fixed;
+    margin-left: 42px;
+    font-size: 21px;
+    font-weight: bolder;
+        }
+        #date{
+    margin-top: 50px;
+    position: fixed;
+    margin-left: 40px;        
+    display: none;
+  }
+
+        .temperature{
+    margin-left: 40px;
+    margin-top: 100px;
+    position: fixed;
+    font-size: x-large;
+        }
+        .input{
+          width: 300px;
+          height: 150px;
+          display: grid;
+          place-items: center;
+          background-color: rgba(255, 255, 255, 0.103);
+          backdrop-filter:(10px);
+          text-transform: capitalize;
+        }
+        .input h3{
+          font-size: 30px;
+          font-weight: bolder;
+        }
+        #enter{
+          position:fixed;
+          margin-left: 750px;
+          margin-top: 200px;
+        }
+        #city{
+          width: 200px;
+          height: 30px;
+          outline: none;
+          cursor: pointer;
+          margin-top: 20px;
+          margin-left: 50px;
+          border-radius: 3px;
+          margin-bottom: 40px;
+          color:white;
+          background-color: transparent;
+        }
+
+        #desc{
+          width: 200px;
+          height: 30px;
+          outline: none;
+          cursor: pointer;
+          margin-top: -40px;
+          margin-left: 50px;
+          border-radius: 3px;
+          margin-bottom: -5px;
+          font-size: 20px;
+          color:white;
+          background-color: transparent;
+        }
+        #btn {
+          width: 100px;
+          height: 28px;
+          cursor: pointer;
+          position: fixed;
+          margin-top: 90px;
+          text-transform: capitalize;
+          background-color: transparent;
+          outline: none;
+          border-radius: 5px;
+        }
+      
+       #btn>button :hover{
+        background-color: black;
+        transition:all 0.4s ease-in;        
+        }
+    </style>
+</head>
+<body>
+         <section id="enter">
+          <div class="input">
+            <h3>Enter city name</h3>
+            <input type="text" id="city">
+            <button id="btn">submit</button>
+          </div>
+         </section>
+         <div class="background">
+         <div class="container">
+            <div id="weatherData"></div>
+            <p id="date"></p>
+          </div>
+        </div>
+        <script>
+         document.getElementById('btn').addEventListener('click', function() {
+    const locationInput = document.getElementById('city').value;
+    document.getElementById("date").style.display="block";
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${locationInput}&appid=33646c8a9999617a96b44693df74bf3b`)
+      .then(response => response.json())
+      .then(data => {
+        const weatherData = document.getElementById('weatherData');
+        weatherData.innerHTML = `
+         <div id='icon'><img src="http://openweathermap.org/img/wn/${data.weather[0].icon}.png" class="weather-icon" alt="Weather Icon"></div>
+          <h2 id='city'>Weather in ${data.name}</h2>
+          <br>
+          <p class='temperature'>Temperature: ${Math.round(data.main.temp - 273.15)}°C</p>
+          <br>
+          <p id='desc'>Description: ${data.weather[0].description}</p>
+          `;
+      });
+  });          
+          const Currdate=document.getElementById("date");
+          function time(val){
+            let d=new Date();
+            let dat,month,year,hour,min,day;
+        var Weekday=new Array(7);    
+   Weekday[0]="Sun";
+   Weekday[1]="Mon";
+   Weekday[2]="Tue";
+   Weekday[3]="Wed";
+   Weekday[4]="Thr";
+   Weekday[5]="Fri";
+   Weekday[6]="Sat";
+        dat=d.getDate();
+        month=d.getMonth();
+        year=d.getFullYear();
+        hour=d.getHours();
+        min=d.getMinutes();
+        day=d.getDay();
+        var months=[
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+ "May",
+ "Jun",
+ "Jul",
+ "Aug",
+ "Sept",
+ "Oct",
+ "Nov",
+ "Dec",
+];
+         if(hour<12){
+           min=min+" AM";
+         }
+         else{
+           min=min+" PM";
+          }
+         if(min<10){
+           min="0"+min;
+         }
+         val.style.fontSize="18px";
+         val.style.backgroundColor="transparent";
+         val.innerHTML=Weekday[day]+" | "+"Date: "+dat+"/"+months[month]+"/"+year+"  "+hour+":"+min;
+        
+       }
+       time(Currdate);
+        </script>
+         <script src="/weather-app/index.js"></script>
+        </body>
+        </html>
+        
